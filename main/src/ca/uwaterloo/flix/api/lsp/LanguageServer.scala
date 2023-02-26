@@ -183,6 +183,7 @@ class LanguageServer(port: Int, o: Options) extends WebSocketServer(new InetSock
       case JString("lsp/implementation") => Request.parseImplementation(json)
       case JString("lsp/rename") => Request.parseRename(json)
       case JString("lsp/documentSymbols") => Request.parseDocumentSymbols(json)
+      case JString("lsp/codeAction") => Request.parseCodeAction(json)
       case JString("lsp/workspaceSymbols") => Request.parseWorkspaceSymbols(json)
       case JString("lsp/uses") => Request.parseUses(json)
       case JString("lsp/semanticTokens") => Request.parseSemanticTokens(json)

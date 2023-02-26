@@ -125,6 +125,11 @@ object Request {
   case class DocumentSymbols(requestId: String, uri: String) extends Request
 
   /**
+    * A request to get code action information.
+    */
+  case class CodeAction(requestId: String, uri: String, range: Range, context: CodeActionContext) extends Request
+
+  /**
    * A request to get semantic tokens for a file.
    */
   case class SemanticTokens(requestId: String, uri: String) extends Request
@@ -358,6 +363,17 @@ object Request {
       id <- parseId(v)
       uri <- parseUri(v)
     } yield Request.DocumentSymbols(id, uri)
+  }
+  /**
+    * Tries to parse the given `json` value as a [[CodeAction]] request.
+    */
+  def parseCodeAction(json: json4s.JValue): Result[Request, String] = {
+    for {
+      id <- parseId(json)
+      uri <- parseUri(json)
+      range <- Range.parse(json \\ "range")
+      context <- CodeActionContext.parse(json)
+    } yield Request.CodeAction(id, uri, range, context)
   }
 
   /**
